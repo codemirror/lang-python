@@ -1,6 +1,6 @@
 import {parser} from "lezer-python"
-import {continuedIndent, indentNodeProp, foldNodeProp, LezerLanguage, LanguageSupport} from "@codemirror/next/language"
-import {styleTags, tags as t} from "@codemirror/next/highlight"
+import {continuedIndent, indentNodeProp, foldNodeProp, LezerLanguage, LanguageSupport} from "@codemirror/language"
+import {styleTags, tags as t} from "@codemirror/highlight"
 
 /// A language provider based on the [Lezer Python
 /// parser](https://github.com/lezer-parser/python), extended with
