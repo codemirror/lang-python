@@ -20,17 +20,7 @@ conduct](http://contributor-covenant.org/version/1/1/0/) that applies
 to communication around the project.
 
 # API Reference
-<dl>
-<dt id="user-content-python">
-  <code><strong><a href="#user-content-python">python</a></strong>() → <a href="https://codemirror.net/6/docs/ref#language.LanguageSupport">LanguageSupport</a></code></dt>
 
-<dd><p>Python language support.</p>
-</dd>
-<dt id="user-content-pythonlanguage">
-  <code><strong><a href="#user-content-pythonlanguage">pythonLanguage</a></strong>: <a href="https://codemirror.net/6/docs/ref#language.LezerLanguage">LezerLanguage</a></code></dt>
+@python
 
-<dd><p>A language provider based on the <a href="https://github.com/lezer-parser/python">Lezer Python
-parser</a>, extended with
-highlighting and indentation information.</p>
-</dd>
-</dl>
+@pythonLanguage
