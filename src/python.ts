@@ -27,6 +27,8 @@ export const pythonLanguage = LezerLanguage.define({
         None: t.null,
         VariableName: t.variableName,
         "CallExpression/VariableName": t.function(t.variableName),
+        "FunctionDefinition/VariableName": t.function(t.definition(t.variableName)),
+        "ClassDefinition/VariableName": t.definition(t.className),
         PropertyName: t.propertyName,
         "CallExpression/MemberExpression/ProperyName": t.function(t.propertyName),
         Comment: t.lineComment,
