@@ -1,3 +1,9 @@
+## 0.17.2 (2021-01-12)
+
+### Bug fixes
+
+Improves the highlighting specificity for names of function and class definitions.
+
 ## 0.17.1 (2021-01-06)
 
 ### New features
