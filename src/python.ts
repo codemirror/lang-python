@@ -1,5 +1,5 @@
 import {parser} from "lezer-python"
-import {continuedIndent, indentNodeProp, foldNodeProp, LezerLanguage, LanguageSupport} from "@codemirror/language"
+import {continuedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
 
 /// A language provider based on the [Lezer Python
@@ -12,9 +12,7 @@ export const pythonLanguage = LezerLanguage.define({
         Body: continuedIndent()
       }),
       foldNodeProp.add({
-        Body(tree) { return {from: tree.from + 1, to: tree.to - 1} },
-        ArrayExpression(tree) { return {from: tree.from + 1, to: tree.to - 1} },
-        DictionaryExpression(tree) { return {from: tree.from + 1, to: tree.to - 1} }
+        "Body ArrayExpression DictionaryExpression": foldInside
       }),
       styleTags({
         "async '*' '**' FormatConversion": t.modifier,
