@@ -1,6 +1,6 @@
 {
   "name": "@codemirror/lang-python",
-  "version": "0.17.2",
+  "version": "0.18.0",
   "description": "Python language support for the CodeMirror code editor",
   "scripts": {
     "test": "echo 'No tests'",
@@ -26,8 +26,8 @@
   "sideEffects": false,
   "license": "MIT",
   "dependencies": {
-    "@codemirror/highlight": "^0.17.0",
-    "@codemirror/language": "^0.17.0",
+    "@codemirror/highlight": "^0.18.0",
+    "@codemirror/language": "^0.18.0",
     "lezer-python": "^0.13.0"
   },
   "devDependencies": {
