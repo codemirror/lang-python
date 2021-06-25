@@ -1,4 +1,4 @@
-import {parser} from "lezer-python"
+import {parser} from "@lezer/python"
 import {continuedIndent, delimitedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
 
