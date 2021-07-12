@@ -19,7 +19,7 @@ export const pythonLanguage = LezerLanguage.define({
         "for while if elif else try except finally return raise break continue with pass assert await yield": t.controlKeyword,
         "in not and or is del": t.operatorKeyword,
         "import from def class global nonlocal lambda": t.definitionKeyword,
-        "with as print": t.keyword,
+        "abs all any as ascii bin bool breakpoint bytearray bytes callable chr classmethod compile complex delattr dict dir divmod enumerate eval filter float format frozenset getattr globals hasattr hash help hex id input int isinstance issubclass iter len list locals map max memoryview min next object oct open ord pow print property range repr reversed round set setattr slice sorted staticmethod str sum super tuple type vars with zip __import__ NotImplemented Ellipsis __debug__": t.keyword,
         self: t.self,
         Boolean: t.bool,
         None: t.null,
