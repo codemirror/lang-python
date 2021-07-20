@@ -1,5 +1,5 @@
 import {parser} from "lezer-python"
-import {continuedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
+import {continuedIndent, delimitedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
 
 /// A language provider based on the [Lezer Python
@@ -10,9 +10,9 @@ export const pythonLanguage = LezerLanguage.define({
     props: [
       indentNodeProp.add({
         Body: continuedIndent({except: /^\s*(else|elif|except|finally)\b/}),
-        TupleExpression: continuedIndent(),
-        DictionaryExpression: continuedIndent(),
-        ArrayExpression: continuedIndent(),
+        TupleExpression: delimitedIndent(),
+        DictionaryExpression: delimitedIndent(),
+        ArrayExpression: delimitedIndent(),
         Script: context => {
           if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
             return context.continue()
