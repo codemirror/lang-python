@@ -9,7 +9,18 @@ export const pythonLanguage = LezerLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Body: continuedIndent()
+        Body: continuedIndent({except: /^\s*(else|elif|except|finally)\b/}),
+        Script: context => {
+          if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
+            return context.continue()
+          let endBody = null
+          for (let cur = context.node;;) {
+            let last = cur.lastChild
+            if (!last || last.type.name != "Body" || last.to != cur.to) break
+            endBody = cur = last
+          }
+          return endBody ? context.lineIndent(context.state.doc.lineAt(endBody.from)) + context.unit : null
+        }
       }),
       foldNodeProp.add({
         "Body ArrayExpression DictionaryExpression": foldInside
@@ -51,7 +62,7 @@ export const pythonLanguage = LezerLanguage.define({
   languageData: {
     closeBrackets: {brackets: ["(", "[", "{", "'", '"', "'''", '"""']},
     commentTokens: {line: "#"},
-    indentOnInput: /^\s*[\}\]\)]$/
+    indentOnInput: /^\s*([\}\]\)]|else:|elif |except |finally:)$/
   }
 })
 
