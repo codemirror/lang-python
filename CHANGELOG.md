@@ -1,3 +1,13 @@
+## 0.18.1 (2021-07-20)
+
+### Bug fixes
+
+Fix highlighting of property names. Improve indentation support
+
+Don't deindent when pressing enter at the end of the document.
+
+Properly indent else/elif/except syntax.
+
 ## 0.18.0 (2021-03-03)
 
 ### Breaking changes
