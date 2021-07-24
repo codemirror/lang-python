@@ -10,9 +10,9 @@ export const pythonLanguage = LezerLanguage.define({
     props: [
       indentNodeProp.add({
         Body: continuedIndent({except: /^\s*(else|elif|except|finally)\b/}),
-        TupleExpression: delimitedIndent(),
-        DictionaryExpression: delimitedIndent(),
-        ArrayExpression: delimitedIndent(),
+        TupleExpression: delimitedIndent({closing: ")"}),
+        DictionaryExpression: delimitedIndent({closing: "}"}),
+        ArrayExpression: delimitedIndent({closing: "]"}),
         Script: context => {
           if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
             return context.continue()
