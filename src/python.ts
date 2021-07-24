@@ -1,6 +1,36 @@
 import {parser} from "lezer-python"
-import {continuedIndent, delimitedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
+import {delimitedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport, TreeIndentContext} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
+import { SyntaxNode } from "lezer-tree";
+
+function shouldDedentAfter(node: SyntaxNode, pos: number): boolean {
+  switch (node.type.name) {
+    case "BreakStatement":
+    case "ContinueStatement":
+    case "PassStatement":
+      return true
+    // For return and raise we need to check we're not in the expression.
+    case "RaiseStatement":
+    case "ReturnStatement":
+      return pos >= node.to
+    default:
+      return false
+  }
+}
+
+function bodyIndent(context: TreeIndentContext) {
+  // Indentation is significant in Python so modify it with care.
+  let currentIndent = context.lineIndent(context.state.doc.lineAt(context.pos))
+  let childBefore = context.node.childBefore(context.pos)
+  if (childBefore && shouldDedentAfter(childBefore, context.pos))
+    return context.baseIndent
+
+  let nodeBefore = context.node.resolve(context.pos, -1)
+  let isBodyStart = nodeBefore && nodeBefore.name === ":"
+  if (isBodyStart)
+    return context.baseIndent + context.unit
+  return currentIndent
+}
 
 /// A language provider based on the [Lezer Python
 /// parser](https://github.com/lezer-parser/python), extended with
@@ -9,24 +39,28 @@ export const pythonLanguage = LezerLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Body: continuedIndent({except: /^\s*(else|elif|except|finally)\b/}),
-        TupleExpression: delimitedIndent({closing: ")"}),
-        DictionaryExpression: delimitedIndent({closing: "}"}),
+        Body: bodyIndent,
+        ArgList: delimitedIndent({closing: ")"}),
         ArrayExpression: delimitedIndent({closing: "]"}),
+        DictionaryExpression: delimitedIndent({closing: "}"}),
+        ParamList: delimitedIndent({closing: ")"}),
+        ParenthesizedExpression: delimitedIndent({closing: ")"}),
+        TupleExpression: delimitedIndent({closing: ")"}),
         Script: context => {
-          if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
-            return context.continue()
-          let endBody = null
-          for (let cur = context.node;;) {
-            let last = cur.lastChild
-            if (!last || last.type.name != "Body" || last.to != cur.to) break
-            endBody = cur = last
+          let currentIndent = context.lineIndent(context.state.doc.lineAt(context.pos))
+          if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to) {
+            return currentIndent;
           }
-          return endBody ? context.lineIndent(context.state.doc.lineAt(endBody.from)) + context.unit : null
-        }
+          // Position at the end of the document isn't inside a trailing body so adjust.
+          let lastNode = context.node.resolve(context.pos, -1)
+          for (let cur: SyntaxNode | null = lastNode; cur; cur = cur.parent)
+            if (cur.type.name == "Body")
+              return bodyIndent(new TreeIndentContext(context, context.pos, cur))
+          return currentIndent;
+        },
       }),
       foldNodeProp.add({
-        "Body ArrayExpression DictionaryExpression": foldInside
+        "Body ArrayExpression DictionaryExpression TupleExpression": foldInside
       }),
       styleTags({
         "async '*' '**' FormatConversion": t.modifier,
@@ -65,7 +99,7 @@ export const pythonLanguage = LezerLanguage.define({
   languageData: {
     closeBrackets: {brackets: ["(", "[", "{", "'", '"', "'''", '"""']},
     commentTokens: {line: "#"},
-    indentOnInput: /^\s*([\}\]\)]|else:|elif |except |finally:)$/
+    indentOnInput: /^\s*[\}\]\)]$/
   }
 })
 
