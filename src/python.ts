@@ -1,6 +1,21 @@
 import {parser} from "@lezer/python"
-import {continuedIndent, delimitedIndent, indentNodeProp, foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
+import {SyntaxNode} from "@lezer/common"
+import {delimitedIndent, indentNodeProp, TreeIndentContext, 
+        foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
+
+function indentBody(context: TreeIndentContext, node: SyntaxNode) {
+  let base = context.lineIndent(node.from)
+  let line = context.lineAt(context.pos, -1), to = line.from + line.text.length
+  // Don't consider blank, deindented lines at the end of the
+  // block part of the block
+  if (!/\S/.test(line.text) &&
+      context.node.to < to + 100 &&
+      !/\S/.test(context.state.sliceDoc(to, context.node.to)) &&
+      context.lineIndent(context.pos, -1) <= base)
+    return null
+  return base + context.unit
+}
 
 /// A language provider based on the [Lezer Python
 /// parser](https://github.com/lezer-parser/python), extended with
@@ -9,20 +24,24 @@ export const pythonLanguage = LezerLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Body: continuedIndent({except: /^\s*(else|elif|except|finally)\b/}),
-        TupleExpression: delimitedIndent({closing: ")"}),
-        DictionaryExpression: delimitedIndent({closing: "}"}),
-        ArrayExpression: delimitedIndent({closing: "]"}),
+        Body: context => indentBody(context, context.node) ?? context.continue(),
+        "TupleExpression ComprehensionExpression ParamList ArgList ParenthesizedExpression": delimitedIndent({closing: ")"}),
+        "DictionaryExpression DictionaryComprehensionExpression SetExpression SetComprehensionExpression": delimitedIndent({closing: "}"}),
+        "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
         Script: context => {
-          if (context.pos + /\s*/.exec(context.textAfter)![0].length < context.node.to)
-            return context.continue()
-          let endBody = null
-          for (let cur = context.node;;) {
-            let last = cur.lastChild
-            if (!last || last.type.name != "Body" || last.to != cur.to) break
-            endBody = cur = last
+          if (context.pos + /\s*/.exec(context.textAfter)![0].length >= context.node.to) {
+            let endBody = null
+            for (let cur: SyntaxNode | null = context.node, to = cur.to;;) {
+              cur = cur.lastChild
+              if (!cur || cur.to != to) break
+              if (cur.type.name == "Body") endBody = cur
+            }
+            if (endBody) {
+              let bodyIndent = indentBody(context, endBody)
+              if (bodyIndent != null) return bodyIndent
+            }
           }
-          return endBody ? context.lineIndent(context.state.doc.lineAt(endBody.from)) + context.unit : null
+          return context.continue()
         }
       }),
       foldNodeProp.add({
