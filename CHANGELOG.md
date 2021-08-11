@@ -1,3 +1,9 @@
+## 0.19.2 (2021-08-11)
+
+### Bug fixes
+
+Make sure that indenting an else/elif/except/finally that's indented too deep moves it back up.
+
 ## 0.19.1 (2021-08-11)
 
 ### Bug fixes
