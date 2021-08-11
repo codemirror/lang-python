@@ -1,3 +1,11 @@
+## 0.19.0 (2021-08-11)
+
+### Bug fixes
+
+Improve indentation for dictionaries, arrays, and tuples. Fix delimitedIndent calls
+
+Indentation on deindented blank lines after a block will no longer return to the block's indentation level.
+
 ## 0.18.1 (2021-07-20)
 
 ### Bug fixes
