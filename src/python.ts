@@ -14,6 +14,11 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
       !/\S/.test(context.state.sliceDoc(to, context.node.to)) &&
       context.lineIndent(context.pos, -1) <= base)
     return null
+  // A normally deindenting keyword that appears at a higher
+  // indentation than the block should probably be handled by the next
+  // level
+  if (/^\s*(else:|elif |except |finally:)/.test(context.textAfter) && context.lineIndent(context.pos, -1) > base)
+    return null
   return base + context.unit
 }
 
@@ -25,6 +30,8 @@ export const pythonLanguage = LRLanguage.define({
     props: [
       indentNodeProp.add({
         Body: context => indentBody(context, context.node) ?? context.continue(),
+        IfStatement: cx => /^\s*(else:|elif )/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
+        TryStatement: cx => /^\s*(except |finally:)/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         "TupleExpression ComprehensionExpression ParamList ArgList ParenthesizedExpression": delimitedIndent({closing: ")"}),
         "DictionaryExpression DictionaryComprehensionExpression SetExpression SetComprehensionExpression": delimitedIndent({closing: "}"}),
         "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
