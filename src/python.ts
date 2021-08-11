@@ -1,7 +1,7 @@
 import {parser} from "@lezer/python"
 import {SyntaxNode} from "@lezer/common"
 import {delimitedIndent, indentNodeProp, TreeIndentContext, 
-        foldNodeProp, foldInside, LezerLanguage, LanguageSupport} from "@codemirror/language"
+        foldNodeProp, foldInside, LRLanguage, LanguageSupport} from "@codemirror/language"
 import {styleTags, tags as t} from "@codemirror/highlight"
 
 function indentBody(context: TreeIndentContext, node: SyntaxNode) {
@@ -20,7 +20,7 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
 /// A language provider based on the [Lezer Python
 /// parser](https://github.com/lezer-parser/python), extended with
 /// highlighting and indentation information.
-export const pythonLanguage = LezerLanguage.define({
+export const pythonLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
