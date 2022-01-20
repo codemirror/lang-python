@@ -1,3 +1,9 @@
+## 0.19.3 (2022-01-20)
+
+### Bug fixes
+
+Fix the way block bodies are folded.
+
 ## 0.19.2 (2021-08-11)
 
 ### Bug fixes

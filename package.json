@@ -1,6 +1,6 @@
 {
   "name": "@codemirror/lang-python",
-  "version": "0.19.2",
+  "version": "0.19.3",
   "description": "Python language support for the CodeMirror code editor",
   "scripts": {
     "test": "cm-runtests",
