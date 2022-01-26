@@ -53,7 +53,7 @@ export const pythonLanguage = LRLanguage.define({
       }),
       foldNodeProp.add({
         "ArrayExpression DictionaryExpression": foldInside,
-        Body: node => ({from: node.from + 1, to: node.to})
+        Body: (node, state) => ({from: node.from + 1, to: node.to - (node.to == state.doc.length ? 0 : 1)})
       }),
       styleTags({
         "async '*' '**' FormatConversion": t.modifier,
