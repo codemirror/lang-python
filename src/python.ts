@@ -53,7 +53,12 @@ export const pythonLanguage = LRLanguage.define({
       }),
       foldNodeProp.add({
         "ArrayExpression DictionaryExpression": foldInside,
-        Body: node => ({from: node.from + 1, to: node.to})
+        Body: node => {
+            function getLastChild(node){
+                return node.lastChild == null ? node : getLastChild(node.lastChild);
+            }
+            return { from: node.from + 1, to: getLastChild(node).to }
+        }
       }),
       styleTags({
         "async '*' '**' FormatConversion": t.modifier,
