@@ -1,3 +1,9 @@
+## 0.19.4 (2022-01-26)
+
+### Bug fixes
+
+Fix issue where folding body nodes folded away the newline after the body.
+
 ## 0.19.3 (2022-01-20)
 
 ### Bug fixes
