@@ -56,13 +56,12 @@ export const pythonLanguage = LRLanguage.define({
         Body: (node, state) => ({from: node.from + 1, to: node.to - (node.to == state.doc.length ? 0 : 1)})
       }),
       styleTags({
-        "async '*' '**' FormatConversion": t.modifier,
+        "async \"*\" \"**\" FormatConversion FormatSpec": t.modifier,
         "for while if elif else try except finally return raise break continue with pass assert await yield": t.controlKeyword,
         "in not and or is del": t.operatorKeyword,
         "from def class global nonlocal lambda": t.definitionKeyword,
         import: t.moduleKeyword,
         "with as print": t.keyword,
-        self: t.self,
         Boolean: t.bool,
         None: t.null,
         VariableName: t.variableName,
