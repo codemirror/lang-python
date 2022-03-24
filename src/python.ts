@@ -2,7 +2,6 @@ import {parser} from "@lezer/python"
 import {SyntaxNode} from "@lezer/common"
 import {delimitedIndent, indentNodeProp, TreeIndentContext, 
         foldNodeProp, foldInside, LRLanguage, LanguageSupport} from "@codemirror/language"
-import {styleTags, tags as t} from "@codemirror/highlight"
 
 function indentBody(context: TreeIndentContext, node: SyntaxNode) {
   let base = context.lineIndent(node.from)
@@ -54,38 +53,6 @@ export const pythonLanguage = LRLanguage.define({
       foldNodeProp.add({
         "ArrayExpression DictionaryExpression": foldInside,
         Body: (node, state) => ({from: node.from + 1, to: node.to - (node.to == state.doc.length ? 0 : 1)})
-      }),
-      styleTags({
-        "async \"*\" \"**\" FormatConversion FormatSpec": t.modifier,
-        "for while if elif else try except finally return raise break continue with pass assert await yield": t.controlKeyword,
-        "in not and or is del": t.operatorKeyword,
-        "from def class global nonlocal lambda": t.definitionKeyword,
-        import: t.moduleKeyword,
-        "with as print": t.keyword,
-        Boolean: t.bool,
-        None: t.null,
-        VariableName: t.variableName,
-        "CallExpression/VariableName": t.function(t.variableName),
-        "FunctionDefinition/VariableName": t.function(t.definition(t.variableName)),
-        "ClassDefinition/VariableName": t.definition(t.className),
-        PropertyName: t.propertyName,
-        "CallExpression/MemberExpression/PropertyName": t.function(t.propertyName),
-        Comment: t.lineComment,
-        Number: t.number,
-        String: t.string,
-        FormatString: t.special(t.string),
-        UpdateOp: t.updateOperator,
-        ArithOp: t.arithmeticOperator,
-        BitOp: t.bitwiseOperator,
-        CompareOp: t.compareOperator,
-        AssignOp: t.definitionOperator,
-        Ellipsis: t.punctuation,
-        At: t.meta,
-        "( )": t.paren,
-        "[ ]": t.squareBracket,
-        "{ }": t.brace,
-        ".": t.derefOperator,
-        ", ;": t.separator
       })
     ],
   }),
