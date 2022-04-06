@@ -1,3 +1,9 @@
+## 0.19.5 (2022-04-06)
+
+### Bug fixes
+
+Make sure * and ** modifiers are highlighted as such, add modifier tag for FormatSpec nodes.
+
 ## 0.19.4 (2022-01-26)
 
 ### Bug fixes
