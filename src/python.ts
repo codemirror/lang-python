@@ -51,7 +51,7 @@ export const pythonLanguage = LRLanguage.define({
         }
       }),
       foldNodeProp.add({
-        "ArrayExpression DictionaryExpression": foldInside,
+        "ArrayExpression DictionaryExpression SetExpression TupleExpression": foldInside,
         Body: (node, state) => ({from: node.from + 1, to: node.to - (node.to == state.doc.length ? 0 : 1)})
       })
     ],
