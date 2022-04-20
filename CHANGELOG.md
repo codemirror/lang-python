@@ -1,3 +1,9 @@
+## 0.20.0 (2022-04-20)
+
+### Bug fixes
+
+Add folding information for set and tuple expressions.
+
 ## 0.19.5 (2022-04-06)
 
 ### Bug fixes
