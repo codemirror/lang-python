@@ -1,3 +1,9 @@
+## 6.0.1 (2022-07-21)
+
+### Bug fixes
+
+Fix (non-)auto indentation in template strings and comments.
+
 ## 6.0.0 (2022-06-08)
 
 ### Breaking changes
