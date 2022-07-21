@@ -34,6 +34,7 @@ export const pythonLanguage = LRLanguage.define({
         "TupleExpression ComprehensionExpression ParamList ArgList ParenthesizedExpression": delimitedIndent({closing: ")"}),
         "DictionaryExpression DictionaryComprehensionExpression SetExpression SetComprehensionExpression": delimitedIndent({closing: "}"}),
         "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
+        "String FormatString": () => null,
         Script: context => {
           if (context.pos + /\s*/.exec(context.textAfter)![0].length >= context.node.to) {
             let endBody = null
