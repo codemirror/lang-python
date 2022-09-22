@@ -58,7 +58,11 @@ export const pythonLanguage = LRLanguage.define({
     ],
   }),
   languageData: {
-    closeBrackets: {brackets: ["(", "[", "{", "'", '"', "'''", '"""']},
+    closeBrackets: {
+      brackets: ["(", "[", "{", "'", '"', "'''", '"""'],
+      stringPrefixes: ["f", "fr", "rf", "r", "u", "b", "br", "rb",
+                       "F", "FR", "RF", "R", "U", "B", "BR", "RB"]
+    },
     commentTokens: {line: "#"},
     indentOnInput: /^\s*([\}\]\)]|else:|elif |except |finally:)$/
   }
