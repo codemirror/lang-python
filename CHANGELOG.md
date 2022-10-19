@@ -1,3 +1,9 @@
+## 6.0.3 (2022-10-19)
+
+### Bug fixes
+
+Add proper indentation handling of `else` clauses in `try` statements.
+
 ## 6.0.2 (2022-09-22)
 
 ### Bug fixes
