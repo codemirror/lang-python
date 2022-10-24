@@ -1,3 +1,9 @@
+## 6.0.4 (2022-10-24)
+
+### Bug fixes
+
+Make sure the language object has a name.
+
 ## 6.0.3 (2022-10-19)
 
 ### Bug fixes
