@@ -25,6 +25,7 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
 /// parser](https://github.com/lezer-parser/python), extended with
 /// highlighting and indentation information.
 export const pythonLanguage = LRLanguage.define({
+  name: "python",
   parser: parser.configure({
     props: [
       indentNodeProp.add({
