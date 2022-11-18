@@ -1,3 +1,11 @@
+## 6.1.0 (2022-11-18)
+
+### New features
+
+The `globalCompletion` completion source (included in the language support returned from `python()`) completes standard Python globals and keywords.
+
+Export a `localCompletionSource` function that completes locally defined variables. Included in the support extensions returned from `python()`.
+
 ## 6.0.4 (2022-10-24)
 
 ### Bug fixes
