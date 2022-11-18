@@ -2,6 +2,8 @@ import {parser} from "@lezer/python"
 import {SyntaxNode} from "@lezer/common"
 import {delimitedIndent, indentNodeProp, TreeIndentContext, 
         foldNodeProp, foldInside, LRLanguage, LanguageSupport} from "@codemirror/language"
+import {globalCompletion, localCompletionSource} from "./complete"
+export {globalCompletion, localCompletionSource}
 
 function indentBody(context: TreeIndentContext, node: SyntaxNode) {
   let base = context.lineIndent(node.from)
@@ -71,5 +73,8 @@ export const pythonLanguage = LRLanguage.define({
 
 /// Python language support.
 export function python() {
-  return new LanguageSupport(pythonLanguage)
+  return new LanguageSupport(pythonLanguage, [
+    pythonLanguage.data.of({autocomplete: localCompletionSource}),
+    pythonLanguage.data.of({autocomplete: globalCompletion}),
+  ])
 }
