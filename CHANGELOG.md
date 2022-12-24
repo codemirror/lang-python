@@ -1,3 +1,9 @@
+## 6.1.1 (2022-12-24)
+
+### Bug fixes
+
+Remove leftover log statements.
+
 ## 6.1.0 (2022-11-18)
 
 ### New features
