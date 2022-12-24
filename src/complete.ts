@@ -62,7 +62,6 @@ function getScope(doc: Text, node: SyntaxNode) {
   let cached = cache.get(node)
   if (cached) return cached
 
-  console.log("get scope for", node.name)
   let completions: Completion[] = [], top = true
   function def(node: SyntaxNodeRef, type: string) {
     let name = doc.sliceString(node.from, node.to)
@@ -71,7 +70,7 @@ function getScope(doc: Text, node: SyntaxNode) {
   node.cursor(IterMode.IncludeAnonymous).iterate(node => {
     if (node.name) {
       let gather = gatherCompletions[node.name]
-      if (gather && gather(node, def, top) || !top && ScopeNodes.has(node.name)) return console.log("bail for", node.name), false
+      if (gather && gather(node, def, top) || !top && ScopeNodes.has(node.name)) return false
       top = false
     } else if (node.to - node.from > 8192) {
       // Allow caching for bigger internal nodes
