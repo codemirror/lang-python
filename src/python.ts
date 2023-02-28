@@ -10,7 +10,7 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
   let line = context.lineAt(context.pos, -1), to = line.from + line.text.length
   // Don't consider blank, deindented lines at the end of the
   // block part of the block
-  if (!/\S/.test(line.text) &&
+  if (/^\s*($|#)/.test(line.text) &&
       context.node.to < to + 100 &&
       !/\S/.test(context.state.sliceDoc(to, context.node.to)) &&
       context.lineIndent(context.pos, -1) <= base)
