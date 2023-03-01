@@ -1,3 +1,9 @@
+## 6.1.2 (2023-03-01)
+
+### Bug fixes
+
+Don't indent lines after a dedented comment line.
+
 ## 6.1.1 (2022-12-24)
 
 ### Bug fixes
