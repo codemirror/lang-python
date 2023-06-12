@@ -1,3 +1,9 @@
+## 6.1.3 (2023-06-12)
+
+### Bug fixes
+
+Fix a bug where blocks started after a wrapped argument list or similar construct were indented too far.
+
 ## 6.1.2 (2023-03-01)
 
 ### Bug fixes
