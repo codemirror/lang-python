@@ -6,7 +6,7 @@ import {globalCompletion, localCompletionSource} from "./complete"
 export {globalCompletion, localCompletionSource}
 
 function indentBody(context: TreeIndentContext, node: SyntaxNode) {
-  let base = context.lineIndent(node.from)
+  let base = context.baseIndentFor(node)
   let line = context.lineAt(context.pos, -1), to = line.from + line.text.length
   // Don't consider blank, deindented lines at the end of the
   // block part of the block
