@@ -26,8 +26,10 @@
   "sideEffects": false,
   "license": "MIT",
   "dependencies": {
+    "@codemirror/state": "^6.0.0",
     "@codemirror/autocomplete": "^6.3.2",
     "@codemirror/language": "^6.8.0",
+    "@lezer/common": "^1.2.1",
     "@lezer/python": "^1.1.4"
   },
   "devDependencies": {
