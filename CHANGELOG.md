@@ -1,3 +1,9 @@
+## 6.1.4 (2024-02-02)
+
+### Bug fixes
+
+Explicitly declare dependencies on @lezer/common and @codemirror/state
+
 ## 6.1.3 (2023-06-12)
 
 ### Bug fixes
