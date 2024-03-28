@@ -1,3 +1,9 @@
+## 6.1.5 (2024-03-28)
+
+### Bug fixes
+
+Properly indent `else:` when attached to a `for` or `while` statement.
+
 ## 6.1.4 (2024-02-02)
 
 ### Bug fixes
