@@ -1,3 +1,9 @@
+## 6.1.6 (2024-04-29)
+
+### Bug fixes
+
+Improve the way indentation for the current body is preserved when inenting new lines.
+
 ## 6.1.5 (2024-03-28)
 
 ### Bug fixes
