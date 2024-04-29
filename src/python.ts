@@ -5,6 +5,28 @@ import {delimitedIndent, indentNodeProp, TreeIndentContext,
 import {globalCompletion, localCompletionSource} from "./complete"
 export {globalCompletion, localCompletionSource}
 
+function innerBody(context: TreeIndentContext) {
+  let {node, pos} = context
+  let lineIndent = context.lineIndent(pos, -1)
+  let found = null
+  for (;;) {
+    let before = node.childBefore(pos)
+    if (!before) {
+      break
+    } else if (before.name == "Comment") {
+      pos = before.from
+    } else if (before.name == "Body") {
+      if (context.baseIndentFor(before) + context.unit <= lineIndent) found = before
+      node = before
+    } else if (before.type.is("Statement")) {
+      node = before
+    } else {
+      break
+    }
+  }
+  return found
+}
+
 function indentBody(context: TreeIndentContext, node: SyntaxNode) {
   let base = context.baseIndentFor(node)
   let line = context.lineAt(context.pos, -1), to = line.from + line.text.length
@@ -31,7 +53,10 @@ export const pythonLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Body: context => indentBody(context, context.node) ?? context.continue(),
+        Body: context => {
+          let inner = innerBody(context)
+          return indentBody(context, inner || context.node) ?? context.continue()
+        },
         IfStatement: cx => /^\s*(else:|elif )/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         "ForStatement WhileStatement": cx => /^\s*else:/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         TryStatement: cx => /^\s*(except |finally:|else:)/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
@@ -40,19 +65,8 @@ export const pythonLanguage = LRLanguage.define({
         "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
         "String FormatString": () => null,
         Script: context => {
-          if (context.pos + /\s*/.exec(context.textAfter)![0].length >= context.node.to) {
-            let endBody = null
-            for (let cur: SyntaxNode | null = context.node, to = cur.to;;) {
-              cur = cur.lastChild
-              if (!cur || cur.to != to) break
-              if (cur.type.name == "Body") endBody = cur
-            }
-            if (endBody) {
-              let bodyIndent = indentBody(context, endBody)
-              if (bodyIndent != null) return bodyIndent
-            }
-          }
-          return context.continue()
+          let inner = innerBody(context)
+          return (inner && indentBody(context, inner)) ?? context.continue()
         }
       }),
       foldNodeProp.add({
