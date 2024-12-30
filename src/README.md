@@ -19,8 +19,25 @@ we have a [code of
 conduct](http://contributor-covenant.org/version/1/1/0/) that applies
 to communication around the project.
 
+## Usage
+
+```javascript
+import {EditorView, basicSetup} from "codemirror"
+import {python} from "@codemirror/lang-python"
+
+const view = new EditorView({
+  parent: document.body,
+  doc: `print("Hello world")`,
+  extensions: [basicSetup, python()]
+})
+```
+
 # API Reference
 
 @python
 
 @pythonLanguage
+
+@globalCompletion
+
+@localCompletionSource
