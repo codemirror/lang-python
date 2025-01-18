@@ -1,3 +1,9 @@
+## 6.1.7 (2025-01-18)
+
+### Bug fixes
+
+Properly indent match/case statements.
+
 ## 6.1.6 (2024-04-29)
 
 ### Bug fixes
