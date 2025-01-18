@@ -15,8 +15,10 @@ function innerBody(context: TreeIndentContext) {
       break
     } else if (before.name == "Comment") {
       pos = before.from
-    } else if (before.name == "Body") {
+    } else if (before.name == "Body" || before.name == "MatchBody") {
       if (context.baseIndentFor(before) + context.unit <= lineIndent) found = before
+      node = before
+    } else if (before.name == "MatchClause") {
       node = before
     } else if (before.type.is("Statement")) {
       node = before
@@ -40,7 +42,7 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
   // A normally deindenting keyword that appears at a higher
   // indentation than the block should probably be handled by the next
   // level
-  if (/^\s*(else:|elif |except |finally:)/.test(context.textAfter) && context.lineIndent(context.pos, -1) > base)
+  if (/^\s*(else:|elif |except |finally:|case\s+[^=:]+:)/.test(context.textAfter) && context.lineIndent(context.pos, -1) > base)
     return null
   return base + context.unit
 }
@@ -57,9 +59,20 @@ export const pythonLanguage = LRLanguage.define({
           let inner = innerBody(context)
           return indentBody(context, inner || context.node) ?? context.continue()
         },
+
+        MatchBody: context => {
+          let inner = innerBody(context)
+          return indentBody(context, inner || context.node) ?? context.continue()
+        },
+
         IfStatement: cx => /^\s*(else:|elif )/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         "ForStatement WhileStatement": cx => /^\s*else:/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         TryStatement: cx => /^\s*(except |finally:|else:)/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
+        MatchStatement: cx => {
+          if (/^\s*case /.test(cx.textAfter)) return cx.baseIndent + cx.unit
+          return cx.continue()
+        },
+
         "TupleExpression ComprehensionExpression ParamList ArgList ParenthesizedExpression": delimitedIndent({closing: ")"}),
         "DictionaryExpression DictionaryComprehensionExpression SetExpression SetComprehensionExpression": delimitedIndent({closing: "}"}),
         "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
@@ -69,6 +82,7 @@ export const pythonLanguage = LRLanguage.define({
           return (inner && indentBody(context, inner)) ?? context.continue()
         }
       }),
+
       foldNodeProp.add({
         "ArrayExpression DictionaryExpression SetExpression TupleExpression": foldInside,
         Body: (node, state) => ({from: node.from + 1, to: node.to - (node.to == state.doc.length ? 0 : 1)})
@@ -82,7 +96,8 @@ export const pythonLanguage = LRLanguage.define({
                        "F", "FR", "RF", "R", "U", "B", "BR", "RB"]
     },
     commentTokens: {line: "#"},
-    indentOnInput: /^\s*([\}\]\)]|else:|elif |except |finally:)$/
+    // Indent logic logic are triggered upon below input patterns
+    indentOnInput: /^\s*([\}\]\)]|else:|elif |except |finally:|case\s+[^:]*:?)$/,
   }
 })
 
