@@ -76,11 +76,12 @@ export const pythonLanguage = LRLanguage.define({
         "TupleExpression ComprehensionExpression ParamList ArgList ParenthesizedExpression": delimitedIndent({closing: ")"}),
         "DictionaryExpression DictionaryComprehensionExpression SetExpression SetComprehensionExpression": delimitedIndent({closing: "}"}),
         "ArrayExpression ArrayComprehensionExpression": delimitedIndent({closing: "]"}),
+        MemberExpression: cx => cx.baseIndent + cx.unit,
         "String FormatString": () => null,
         Script: context => {
           let inner = innerBody(context)
           return (inner && indentBody(context, inner)) ?? context.continue()
-        }
+        },
       }),
 
       foldNodeProp.add({
