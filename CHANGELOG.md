@@ -1,3 +1,13 @@
+## 6.2.0 (2025-04-25)
+
+### Bug fixes
+
+Add an indentation rule for member expressions.
+
+### New features
+
+Allow multi-line strings to be code-folded.
+
 ## 6.1.7 (2025-01-18)
 
 ### Bug fixes
