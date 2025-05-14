@@ -56,8 +56,8 @@ export const pythonLanguage = LRLanguage.define({
     props: [
       indentNodeProp.add({
         Body: context => {
-          let inner = innerBody(context)
-          return indentBody(context, inner || context.node) ?? context.continue()
+          let body = /^\s*(#|$)/.test(context.textAfter) && innerBody(context) || context.node
+          return indentBody(context, body) ?? context.continue()
         },
 
         MatchBody: context => {
@@ -67,7 +67,7 @@ export const pythonLanguage = LRLanguage.define({
 
         IfStatement: cx => /^\s*(else:|elif )/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         "ForStatement WhileStatement": cx => /^\s*else:/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
-        TryStatement: cx => /^\s*(except |finally:|else:)/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
+        TryStatement: cx => /^\s*(except[ :]|finally:|else:)/.test(cx.textAfter) ? cx.baseIndent : cx.continue(),
         MatchStatement: cx => {
           if (/^\s*case /.test(cx.textAfter)) return cx.baseIndent + cx.unit
           return cx.continue()
