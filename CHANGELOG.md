@@ -1,3 +1,9 @@
+## 6.2.1 (2025-05-14)
+
+### Bug fixes
+
+Fix an issue where the indentation logic would too eagerly align lines to the body directly above them.
+
 ## 6.2.0 (2025-04-25)
 
 ### Bug fixes
