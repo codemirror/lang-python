@@ -48,7 +48,7 @@ function indentBody(context: TreeIndentContext, node: SyntaxNode) {
 }
 
 /// A language provider based on the [Lezer Python
-/// parser](https://github.com/lezer-parser/python), extended with
+/// parser](https://code.haverbeke.berlin/lezer/python), extended with
 /// highlighting and indentation information.
 export const pythonLanguage = LRLanguage.define({
   name: "python",

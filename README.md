@@ -2,7 +2,7 @@
 
 # @codemirror/lang-python [![NPM version](https://img.shields.io/npm/v/@codemirror/lang-python.svg)](https://www.npmjs.org/package/@codemirror/lang-python)
 
-[ [**WEBSITE**](https://codemirror.net/) | [**ISSUES**](https://github.com/codemirror/dev/issues) | [**FORUM**](https://discuss.codemirror.net/) | [**CHANGELOG**](https://github.com/codemirror/lang-python/blob/main/CHANGELOG.md) ]
+[ [**WEBSITE**](https://codemirror.net/) | [**ISSUES**](https://code.haverbeke.berlin/codemirror/dev/issues) | [**FORUM**](https://discuss.codemirror.net/) | [**CHANGELOG**](https://code.haverbeke.berlin/codemirror/lang-python/src/branch/main/CHANGELOG.md) ]
 
 This package implements Python language support for the
 [CodeMirror](https://codemirror.net/) code editor.
@@ -12,7 +12,7 @@ number of [examples](https://codemirror.net/examples/) and the
 [documentation](https://codemirror.net/docs/).
 
 This code is released under an
-[MIT license](https://github.com/codemirror/lang-python/tree/main/LICENSE).
+[MIT license](https://code.haverbeke.berlin/codemirror/lang-python/tree/main/LICENSE).
 
 We aim to be an inclusive, welcoming community. To make that explicit,
 we have a [code of
@@ -43,7 +43,7 @@ const view = new EditorView({
 <dt id="user-content-pythonlanguage">
   <code><strong><a href="#user-content-pythonlanguage">pythonLanguage</a></strong>: <a href="https://codemirror.net/docs/ref#language.LRLanguage">LRLanguage</a></code></dt>
 
-<dd><p>A language provider based on the <a href="https://github.com/lezer-parser/python">Lezer Python
+<dd><p>A language provider based on the <a href="https://code.haverbeke.berlin/lezer/python">Lezer Python
 parser</a>, extended with
 highlighting and indentation information.</p>
 </dd>
